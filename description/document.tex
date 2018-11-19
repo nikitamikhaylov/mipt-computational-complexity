@@ -1,0 +1,130 @@
+\documentclass[A4, twocolumn]{article}
+\usepackage{ucs}
+\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[russian]{babel}  
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\usepackage{titlesec} % Allows customization of titles
+\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+\renewcommand\thesubsection{\roman{subsection}} % roman numerals for subsections
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+\titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+
+
+% Цвета для гиперссылок
+\definecolor{linkcolor}{HTML}{00008B} % цвет ссылок
+\definecolor{urlcolor}{HTML}{00008B} % цвет гиперссылок
+ 
+\hypersetup{pdfstartview=FitH,  linkcolor=linkcolor,urlcolor=urlcolor, colorlinks=true}
+
+\graphicspath{{pictures/}}
+
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
+\newtheorem{Def}{Определение}
+
+\newtheorem{Fact}{Факт}
+
+\newtheorem{Th}{Теорема}
+
+\newtheorem{Lem}{Лемма}
+
+\newenvironment{PROOF}
+{\par\noindent{\bf Доказательство:}\newline$\triangleright$}
+{\hfill$\scriptstyle\blacktriangleleft$}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+\title{
+\textbf{Метрическая задача коммивояжёра - 1} 
+}
+
+\date{\today}
+\author{ 
+	\textsc{Михайлов Никита} \\
+	\normalsize \href{mailto:mikhaylovnikitka@phystech.edu}{mikhaylovnikitka@phystech.edu} \\
+	\normalsize \href{https://github.com/nikitamikhaylov}{https://github.com/nikitamikhaylov}
+}
+
+\usepackage{titling}
+\renewcommand{\maketitlehookd}{
+	Коммивояжёр (фр. commis voyageur) — бродячий торговец. Проблема коммивояжёра - одна из самых известных задач комбинаторной оптимизации, с которой ежедневно сталкиваются курьеры, почтальоны, путешественники. Их цель - найти наиболее выгодный маршрут, проходящий через заранее известные места, расстояния между которыми тоже известны. В данной работе рассмотрен метрический случай данной задачи и алгоритмы нахождения её приближенного решения.
+}
+
+\begin{document}
+
+    \maketitle
+    
+	%----------------------------------------------------------
+	
+	\section{\textbf{Поставленные задачи и вопросы}}
+	
+		\begin{enumerate}
+			\item[$($а$)$] Несуществование полиномиального алгоритма для стандартной задачи коммивояжера, дающего константное приближение, в предположении \textbf{P} $\ne$ \textbf{NP}.
+			\item[$($б$)$] Построение алгоритма, дающего 2-приближение для метрической задачи коммивояжёра на основе остовного дерева.
+			\item[$($в$)$] Построение алгоритма, дающего 1.5-приближение для метрической задачи коммивояжёра на основе остовного дерева и паросочетания. 
+			\item[$($г$)$] Реализация алгоритма, дающего 1.5-приближение для метрической задачи коммивояжёра.
+		\end{enumerate}
+	%---------------------------------------------------------
+	
+	\section{\textbf{Точный алгоритм для стандартной задачи коммивояжера}}	
+	Описание алгоритма.
+	\begin{itemize}
+		\item Для каждого непустого подмножества 
+		
+		$S \subseteq \{2, . . . , n\}$ и для каждой вершины $i \in S$ через $Opt[S,i]$ будем обозначать длину кратчайшего маршрута, начнинающегося в вершине 1, проходящему через все вершины $S − \{i\}$ и заканчивающегося в вершине $i$
+		\item Последовательно заполнить матрицу 
+		
+		$Opt [S , i ] = min{Opt [S − {i }, j ] + d (i , j ) : j ∈ S − {i }}$
+		\item Вернуть оптимальную стоимость маршрута: 
+		
+		$min{Opt[{2,...,n},j]+d(j,1):2 \leq j \leq n}$
+	\end{itemize}		
+
+	\begin{Lem}{(Без доказательства.)}
+		Сложность алгоритма по времени и по памяти есть $poly(n)2^n$.
+	\end{Lem}
+
+	\begin{Fact}
+		Данный теоретическиий алгоритм был представлен в 1962-м году и до сих пор является самым быстрым из известных.
+	\end{Fact}
+	%----------------------------------------------------------
+	
+	\section{\textbf{Несуществование алгоритма, дающего константное приближение для стандартной задачи коммивояжёра}}
+	
+	\begin{Th}
+		Пусть  $\textbf{P} \ne \textbf{NP}$ и  $c \in \mathbb{N}$. для стандартной задачи коммивояжера не существует алгоритма, дающего константное приближение и работающего за полиномиальное время.	
+	\end{Th}
+	
+	\begin{PROOF}
+	Предположим, что такой алгоритм существует (назовем его $A$) и дает $c$-приближение. Построим с помощью него полиномиальный алгоритм, который определяет принадлежность графа $G$ к языку HAMCYCLE.
+	
+	Рассмотрим произвольный граф $G = (V, E)$. Достроим его до полного взвешенного графа $Q$. Ребрам, которые входили в $G$, сопоставим вес 1, а всем остальным дадим вес $|V|c + 1$. Применим $A$ к новому графу $Q$. Результат - гамильтонов цикл $H$ веса $w(H)$.
+	
+	Пусть $w(H) \leq |V|c$. В таком случае кратчайший гамильтонов цикл имеет вес $w_{opt} \leq w(H)$, а значит в нем нет новых ребер (так как вес каждого из них превосходит $w(H)$), тогда $H$ присутствовал и в графе $G$.
+	
+	Пусть $w(H) > |V|c$, тогда наименьший гамильтонов цикл имеет вес $w_{opt} \geq \frac{w(H)}{c} > |V|$, значит он содержит хотя бы одно новое ребро, но тогда в исходном графе гамильтонова цикла не было (его вес равен $|V|$).
+	
+	Таким образом, предъявлен способ решения \textbf{NP}-полной задачи с помощью полиномиального алгоритма, а значит $\mathbf{P} = \mathbf{NP}$, что противоречит предположению $\mathbf{P} \ne \mathbf{NP}$.	
+	\end{PROOF}
+
+	%----------------------------------------------------------
+	
+	
+	\section{Источники}
+	\begin{enumerate}
+		\item \label{book1} \href{https://press.princeton.edu/titles/9531.html}{William J. Cook: In Pursuit of the Traveling Salesman, 2014.}
+	\end{enumerate}
+	 	
+	%----------------------------------------------------------
+	 
+   
+\end{document}
