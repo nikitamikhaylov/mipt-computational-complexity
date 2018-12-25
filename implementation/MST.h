@@ -8,8 +8,11 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <utility>
 
-using namespace std;
+using std::pair;
+using std::vector;
+using std::swap;
 
 const int MAXN = 1e5;
 

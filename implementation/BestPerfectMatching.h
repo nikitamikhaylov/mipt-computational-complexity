@@ -9,7 +9,7 @@
 
 #define INF (long long)1e15
 
-using namespace std;
+using std::vector;
 
 vector<long long> get_min_perfect_matching(vector<vector<long long>>& g) {
 

@@ -7,7 +7,7 @@
 
 #include <stack>
 
-using namespace std;
+using std::vector;
 
 void dfs(long long v, vector<vector<long long> >& g, vector <long long>& cycle, vector <long long>& ref) {
     long long i;

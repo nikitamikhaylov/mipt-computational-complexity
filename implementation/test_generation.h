@@ -12,6 +12,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+using std::set;
+using std::string;
+using std::to_string;
+using std::make_pair;
+
+
 void gen_test(long long v, long long num) {
     srand(time(nullptr));
 

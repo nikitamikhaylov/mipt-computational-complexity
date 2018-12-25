@@ -19,6 +19,11 @@
 #include <cstdio>
 #include "test_generation.h"
 
+using std::vector;
+using std::cin;
+using std::cout;
+using std::cerr;
+using std::endl;
 
 void run_test(long long test_num) {
 
@@ -37,7 +42,7 @@ void run_test(long long test_num) {
     string filename = "input" + to_string(test_num) + ".txt";
     freopen(filename.c_str(), "r", stdin);
 
-    ios_base::sync_with_stdio(false);
+    std::ios_base::sync_with_stdio(false);
     cin.tie(0);
 
     cin >> N >> M;
